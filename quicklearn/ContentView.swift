@@ -12,7 +12,7 @@ struct ContentView: View {
             .navigationTitle("Cards")
             .toolbar {
                 Button(action: {}) {
-                    Image(systemName: "edit")
+                    Image(systemName: "ellipsis.circle")
                 }
             }
         }
