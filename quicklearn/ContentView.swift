@@ -1,15 +1,26 @@
 import SwiftUI
-
+ 
 struct ContentView: View {
+    let cards : [CardData]
     var body: some View {
-        List {
-            Text("test")
-            Text("test")
+        NavigationStack {
+            List(cards, id: \.self.title) { card in
+                NavigationLink(destination: Text(card.title)) {
+                    CardView(data: card)
+                }
+            }
+            .navigationTitle("Cards")
+            .toolbar {
+                Button(action: {}) {
+                    Image(systemName: "edit")
+                }
+            }
         }
     }
 }
 
 
 #Preview {
-    ContentView()
+    
+    ContentView(cards: CardView.cards)
 }

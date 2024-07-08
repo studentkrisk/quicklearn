@@ -12,6 +12,13 @@ struct CardData {
 
 struct CardView : View {
     let data : CardData
+    static var cards = [
+        CardData(title: "2-1 Multiplication", type: CardType.Arithmetic, avg_time: 2.54),
+        CardData(title: "2-2 Multiplication", type: CardType.Arithmetic, avg_time: 2.54),
+        CardData(title: "2-3 Multiplication", type: CardType.Arithmetic, avg_time: 2.54),
+        CardData(title: "2-4 Multiplication", type: CardType.Arithmetic, avg_time: 2.54),
+        CardData(title: "2-5 Multiplication", type: CardType.Arithmetic, avg_time: 2.54)
+    ]
     var body: some View {
         VStack(alignment: .leading) {
             Text(data.title)
@@ -34,3 +41,4 @@ struct CardView_Previews: PreviewProvider {
             .previewLayout(.fixed(width: 400, height: 60))
     }
 }
+
