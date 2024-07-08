@@ -4,8 +4,7 @@ struct ContentView: View {
     let cards : [CardData]
     var body: some View {
         NavigationStack {
-            List(cards, id: \.self.title) { card in
-                NavigationLink(destination: Text(card.title)) {
+            List(cards, id: \.self.title) { card in NavigationLink(destination: CardPage(card: card)) {
                     CardView(data: card)
                 }
             }
@@ -22,5 +21,5 @@ struct ContentView: View {
 
 #Preview {
     
-    ContentView(cards: CardView.cards)
+    ContentView(cards: cards)
 }

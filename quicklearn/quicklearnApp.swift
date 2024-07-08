@@ -11,7 +11,7 @@ import SwiftUI
 struct quicklearnApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(cards: CardView.cards)
+            ContentView(cards: cards)
         }
     }
 }
