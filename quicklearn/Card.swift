@@ -105,25 +105,20 @@ struct CardPage : View {
                 .navigationBarTitle(Text(card.title))
                 Spacer()
                 Grid {
-                    GridRow {
-                        Button(action: {() -> () in x = 10*abs(x) + 1}) {Text("1")}
-                        Button(action: {() -> () in x = 10*x + 2}) {Text("2")}
-                        Button(action: {() -> () in x = 10*x + 3}) {Text("3")}
+                    ForEach(0..<3) { n1 in
+                        GridRow {
+                            ForEach(1..<4) { n2 in
+                                Button(action: {() -> () in x = 10*abs(x) + 3*n1 + n2}) {Text("\(3*n1 + n2)")}
+                                .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+                            }
+                        }
                     }
                     GridRow {
-                        Button(action: {() -> () in x = 10*x + 4}) {Text("4")}
-                        Button(action: {() -> () in x = 10*x + 5}) {Text("5")}
-                        Button(action: {() -> () in x = 10*x + 6}) {Text("6")}
-                    }
-                    GridRow {
-                        Button(action: {() -> () in x = 10*x + 7}) {Text("7")}
-                        Button(action: {() -> () in x = 10*x + 8}) {Text("8")}
-                        Button(action: {() -> () in x = 10*x + 9}) {Text("9")}
-                    }
-                    GridRow {
-                        Button(action: {() -> () in x = -x}) {Text("-")}
+                        Button(action: {() -> () in x = -x}) {Text("-")}.padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
                         Button(action: {() -> () in x = 10*x + 0}) {Text("0")}
+                            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
                         Button(action: {() -> () in x = Int(x/10)}) {Label("", systemImage: "delete.left")}
+                            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
                     }
                 }
             }
