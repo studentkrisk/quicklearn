@@ -109,16 +109,17 @@ struct CardPage : View {
                         GridRow {
                             ForEach(1..<4) { n2 in
                                 Button(action: {() -> () in x = 10*abs(x) + 3*n1 + n2}) {Text("\(3*n1 + n2)")}
-                                .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+                                    .buttonStyle(NumPadButtonStyle())
                             }
                         }
                     }
                     GridRow {
-                        Button(action: {() -> () in x = -x}) {Text("-")}.padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+                        Button(action: {() -> () in x = -x}) {Text("-")}
+                            .buttonStyle(NumPadButtonStyle())
                         Button(action: {() -> () in x = 10*x + 0}) {Text("0")}
-                            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+                            .buttonStyle(NumPadButtonStyle())
                         Button(action: {() -> () in x = Int(x/10)}) {Label("", systemImage: "delete.left")}
-                            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+                            .buttonStyle(NumPadButtonStyle())
                     }
                 }
             }
@@ -126,6 +127,12 @@ struct CardPage : View {
     }
 }
 
+struct NumPadButtonStyle {
+    func makeBody(configuration: ButtonStyleConfiguration) -> some View {
+        configuration.label
+            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+    }
+}
 
 //struct CardView_Previews: PreviewProvider {
 //    static var previews: some View {
