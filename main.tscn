@@ -1,3 +1,20 @@
-[gd_scene format=3 uid="uid://dsuts2k6vyi4u"]
+[gd_scene load_steps=2 format=3 uid="uid://dsuts2k6vyi4u"]
 
-[node name="Node2D" type="Node2D"]
+[ext_resource type="Theme" uid="uid://k32d30gd71iv" path="res://assets/theme.tres" id="1_5sffc"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_5sffc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

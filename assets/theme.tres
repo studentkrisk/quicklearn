@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://k32d30gd71iv"]
+
+[ext_resource type="FontFile" uid="uid://cbbnqomi583qm" path="res://assets/montserrat/Montserrat-SemiBold.ttf" id="1_fysl7"]
+
+[resource]
+default_font = ExtResource("1_fysl7")
