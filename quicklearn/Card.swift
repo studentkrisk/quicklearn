@@ -94,13 +94,39 @@ struct CardPage : View {
     @State private var x: Int = 0
     var body: some View {
         NavigationStack {
-            HStack {
-                Text("\(card.template.eq) = ")
-                TextField("Answer", value: $x, format: .number)
-                    .textFieldStyle(.roundedBorder)
+            VStack {
+                Spacer()
+                HStack {
+                    Text("\(card.template.eq) = ")
+                    TextField("Answer", value: $x, format: .number)
+                        .textFieldStyle(.roundedBorder)
+                }
+                .padding(50)
+                .navigationBarTitle(Text(card.title))
+                Spacer()
+                Grid {
+                    GridRow {
+                        Button(action: {() -> () in x = 10*abs(x) + 1}) {Text("1")}
+                        Button(action: {() -> () in x = 10*x + 2}) {Text("2")}
+                        Button(action: {() -> () in x = 10*x + 3}) {Text("3")}
+                    }
+                    GridRow {
+                        Button(action: {() -> () in x = 10*x + 4}) {Text("4")}
+                        Button(action: {() -> () in x = 10*x + 5}) {Text("5")}
+                        Button(action: {() -> () in x = 10*x + 6}) {Text("6")}
+                    }
+                    GridRow {
+                        Button(action: {() -> () in x = 10*x + 7}) {Text("7")}
+                        Button(action: {() -> () in x = 10*x + 8}) {Text("8")}
+                        Button(action: {() -> () in x = 10*x + 9}) {Text("9")}
+                    }
+                    GridRow {
+                        Button(action: {() -> () in x = -x}) {Text("-")}
+                        Button(action: {() -> () in x = 10*x + 0}) {Text("0")}
+                        Button(action: {() -> () in x = Int(x/10)}) {Label("", systemImage: "delete.left")}
+                    }
+                }
             }
-            .padding(50)
-            .navigationBarTitle(Text(card.title))
         }
     }
 }
