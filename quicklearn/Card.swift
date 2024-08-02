@@ -103,7 +103,7 @@ struct CardView : View {
 
 
 struct CardPage : View {
-    let card : CardData
+    var card : CardData
     
     let background = Color(hex: 0x080c14)
     let text = Color(hex: 0xE0F0FF)
@@ -111,22 +111,38 @@ struct CardPage : View {
     let secondary = Color(hex: 0x0c1a36)
     let accent = Color(hex: 0x3377FF)
     
-    private var ans: Int = 0
-    private var state: [Int]
+    @State private var ans: Int = 0
+    private var state: [Int] = []
     private var eq: String
     
-    var body: some View {
+    func pressNumPadButton(button: String) {
+        switch button {
+        case "-":
+            ans *= -1
+        case "delete":
+            ans = Int(ans/10)
+        default:
+            ans = 10*ans + Int(button)!
+        }
+    }
+    
+    init(card: CardData) {
         eq = card.template.eq
         for i in 0..<card.template.gen.count {
             state.append(Int.random(in: card.template.gen[i]))
-            eq = card.template.eq.replacingOccurrences(of: card.template.vars[i], with: state[-1])
+            eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
         }
+        self.card = card
+    }
+    
+    var body: some View {
         NavigationStack {
             VStack {
                 Spacer()
                 HStack {
                     Spacer()
                     Text("\(eq) = \(ans)")
+                        .font(.system(size: 32))
                     Spacer()
                 }
                 .padding(50)
@@ -136,17 +152,17 @@ struct CardPage : View {
                     ForEach(0..<3) { n1 in
                         GridRow {
                             ForEach(1..<4) { n2 in
-                                Button(action: {() -> () in ans = 10*abs(ans) + 3*n1 + n2}) {Text("\(3*n1 + n2)")}
+                                Button(action: {pressNumPadButton("\(3*n1 + n2)")})
                                     .buttonStyle(NumPadButtonStyle())
                             }
                         }
                     }
                     GridRow {
-                        Button(action: {() -> () in ans = -ans}) {Text("-")}
+                        Button(action: {pressNumPadButton("-")}) {Text("-")}
                             .buttonStyle(NumPadButtonStyle())
-                        Button(action: {() -> () in ans = 10*ans + 0}) {Text("0")}
+                        Button(action: {pressNumPadButton("0")}) {Text("0")}
                             .buttonStyle(NumPadButtonStyle())
-                        Button(action: {() -> () in ans = Int(ans/10)}) {Label("test", systemImage: "delete.left").labelStyle(.iconOnly)}
+                                    Button(action: {pressNumPadButton("delete")}) {Label("", systemImage: "delete.left").labelStyle(.iconOnly)}
                             .buttonStyle(NumPadButtonStyle())
                     }
                 }
@@ -168,6 +184,7 @@ struct NumPadButtonStyle: ButtonStyle {
             .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
             .background(Capsule().fill(primary))
             .foregroundColor(text)
+            .font(.system(size: 24))
     }
 }
 
@@ -181,7 +198,6 @@ struct NumPadButtonStyle: ButtonStyle {
 
 struct CardPage_Previews: PreviewProvider {
     static var previews: some View {
-        let card : CardData = cards[0]
-        CardPage(card: card)
+        CardPage(card: cards[0])
     }
 }
