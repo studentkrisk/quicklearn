@@ -1,5 +1,17 @@
 import SwiftUI
 
+extension Color {
+    init(hex: Int, opacity: Double = 1) {
+        self.init(
+            .sRGB,
+            red: Double((hex >> 16) & 0xff) / 255,
+            green: Double((hex >> 08) & 0xff) / 255,
+            blue: Double((hex >> 00) & 0xff) / 255,
+            opacity: opacity
+        )
+    }
+}
+
 enum CardType {
     case Arithmetic
 }
@@ -93,11 +105,11 @@ struct CardView : View {
 struct CardPage : View {
     let card : CardData
     
-    let background = Color("080c14")
-    let text = Color("E0F0FF")
-    let primary = Color("3377FF")
-    let secondary = Color("0c1a36")
-    let accent = Color("3377FF")
+    let background = Color(hex: 0x080c14)
+    let text = Color(hex: 0xE0F0FF)
+    let primary = Color(hex: 0x3377FF)
+    let secondary = Color(hex: 0x0c1a36)
+    let accent = Color(hex: 0x3377FF)
     
     @State private var x: Int = 0
     var body: some View {
@@ -128,7 +140,7 @@ struct CardPage : View {
                             .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
                             .background(Capsule().fill(primary))
                             .foregroundColor(text)
-                        Button(action: {() -> () in x = 10*x + 0}) {Text("2")}
+                        Button(action: {() -> () in x = 10*x + 0}) {Text("0")}
                             .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
                             .background(Capsule().fill(primary))
                             .foregroundColor(text)
@@ -140,7 +152,7 @@ struct CardPage : View {
                 }
                 .padding(10)
                 .background(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)).fill(secondary))
-            }
+            }.background(background)
         }
     }
 }
