@@ -117,9 +117,9 @@ struct CardPage : View {
             VStack {
                 Spacer()
                 HStack {
-                    Text("\(card.template.eq) = ")
-                    TextField("Answer", value: $x, format: .number)
-                        .textFieldStyle(.roundedBorder)
+                    Spacer()
+                    Text("\(card.template.eq) = \(x)")
+                    Spacer()
                 }
                 .padding(50)
                 .navigationBarTitle(Text(card.title))
@@ -129,25 +129,17 @@ struct CardPage : View {
                         GridRow {
                             ForEach(1..<4) { n2 in
                                 Button(action: {() -> () in x = 10*abs(x) + 3*n1 + n2}) {Text("\(3*n1 + n2)")}
-                                    .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
-                                    .background(Capsule().fill(primary))
-                                    .foregroundColor(text)
+                                    .backgroundStyle(NumPadButtonStyle())
                             }
                         }
                     }
                     GridRow {
                         Button(action: {() -> () in x = -x}) {Text("-")}
-                            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
-                            .background(Capsule().fill(primary))
-                            .foregroundColor(text)
+                            .buttonStyle(NumPadButtonStyle())
                         Button(action: {() -> () in x = 10*x + 0}) {Text("0")}
-                            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
-                            .background(Capsule().fill(primary))
-                            .foregroundColor(text)
+                            .buttonStyle(NumPadButtonStyle())
                         Button(action: {() -> () in x = Int(x/10)}) {Label("test", systemImage: "delete.left").labelStyle(.iconOnly)}
-                            .padding(EdgeInsets(top: 20, leading: 35, bottom: 20, trailing: 35))
-                            .background(Capsule().fill(primary))
-                            .foregroundColor(text)
+                            .buttonStyle(NumPadButtonStyle())
                     }
                 }
                 .padding(10)
@@ -157,10 +149,17 @@ struct CardPage : View {
     }
 }
 
-struct NumPadButtonStyle {
-    func makeBody(configuration: ButtonStyleConfiguration) -> some View {
+struct NumPadButtonStyle: ButtonStyle {
+    let background = Color(hex: 0x080c14)
+    let text = Color(hex: 0xE0F0FF)
+    let primary = Color(hex: 0x3377FF)
+    let secondary = Color(hex: 0x0c1a36)
+    let accent = Color(hex: 0x3377FF)
+    func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+            .background(Capsule().fill(primary))
+            .foregroundColor(text)
     }
 }
 
