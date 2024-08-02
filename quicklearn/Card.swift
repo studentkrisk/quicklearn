@@ -111,14 +111,18 @@ struct CardPage : View {
     let secondary = Color(hex: 0x0c1a36)
     let accent = Color(hex: 0x3377FF)
     
-    @State private var x: Int = 0
+    private var ans: Int = 0
+    private var state: [Int]
+    for i in 1...
+    
+    
     var body: some View {
         NavigationStack {
             VStack {
                 Spacer()
                 HStack {
                     Spacer()
-                    Text("\(card.template.eq) = \(x)")
+                    Text("\(card.template.eq.replacingOccurrences(of: "x", with: "\(x)").replacingOccurrences(of: "y", with: "\(y)")) = \(x)")
                     Spacer()
                 }
                 .padding(50)
@@ -128,17 +132,17 @@ struct CardPage : View {
                     ForEach(0..<3) { n1 in
                         GridRow {
                             ForEach(1..<4) { n2 in
-                                Button(action: {() -> () in x = 10*abs(x) + 3*n1 + n2}) {Text("\(3*n1 + n2)")}
-                                    .backgroundStyle(NumPadButtonStyle())
+                                Button(action: {() -> () in ans = 10*abs(ans) + 3*n1 + n2}) {Text("\(3*n1 + n2)")}
+                                    .buttonStyle(NumPadButtonStyle())
                             }
                         }
                     }
                     GridRow {
-                        Button(action: {() -> () in x = -x}) {Text("-")}
+                        Button(action: {() -> () in ans = -ans}) {Text("-")}
                             .buttonStyle(NumPadButtonStyle())
-                        Button(action: {() -> () in x = 10*x + 0}) {Text("0")}
+                        Button(action: {() -> () in ans = 10*ans + 0}) {Text("0")}
                             .buttonStyle(NumPadButtonStyle())
-                        Button(action: {() -> () in x = Int(x/10)}) {Label("test", systemImage: "delete.left").labelStyle(.iconOnly)}
+                        Button(action: {() -> () in ans = Int(ans/10)}) {Label("test", systemImage: "delete.left").labelStyle(.iconOnly)}
                             .buttonStyle(NumPadButtonStyle())
                     }
                 }
