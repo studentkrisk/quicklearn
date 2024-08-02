@@ -113,16 +113,20 @@ struct CardPage : View {
     
     private var ans: Int = 0
     private var state: [Int]
-    for i in 1...
-    
+    private var eq: String
     
     var body: some View {
+        eq = card.template.eq
+        for i in 0..<card.template.gen.count {
+            state.append(Int.random(in: card.template.gen[i]))
+            eq = card.template.eq.replacingOccurrences(of: card.template.vars[i], with: state[-1])
+        }
         NavigationStack {
             VStack {
                 Spacer()
                 HStack {
                     Spacer()
-                    Text("\(card.template.eq.replacingOccurrences(of: "x", with: "\(x)").replacingOccurrences(of: "y", with: "\(y)")) = \(x)")
+                    Text("\(eq) = \(ans)")
                     Spacer()
                 }
                 .padding(50)
