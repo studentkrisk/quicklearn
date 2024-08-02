@@ -89,8 +89,16 @@ struct CardView : View {
     }
 }
 
+
 struct CardPage : View {
     let card : CardData
+    
+    let background = Color("080c14")
+    let text = Color("E0F0FF")
+    let primary = Color("3377FF")
+    let secondary = Color("0c1a36")
+    let accent = Color("3377FF")
+    
     @State private var x: Int = 0
     var body: some View {
         NavigationStack {
@@ -109,19 +117,29 @@ struct CardPage : View {
                         GridRow {
                             ForEach(1..<4) { n2 in
                                 Button(action: {() -> () in x = 10*abs(x) + 3*n1 + n2}) {Text("\(3*n1 + n2)")}
-                                    .buttonStyle(NumPadButtonStyle())
+                                    .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+                                    .background(Capsule().fill(primary))
+                                    .foregroundColor(text)
                             }
                         }
                     }
                     GridRow {
                         Button(action: {() -> () in x = -x}) {Text("-")}
-                            .buttonStyle(NumPadButtonStyle())
-                        Button(action: {() -> () in x = 10*x + 0}) {Text("0")}
-                            .buttonStyle(NumPadButtonStyle())
-                        Button(action: {() -> () in x = Int(x/10)}) {Label("", systemImage: "delete.left")}
-                            .buttonStyle(NumPadButtonStyle())
+                            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+                            .background(Capsule().fill(primary))
+                            .foregroundColor(text)
+                        Button(action: {() -> () in x = 10*x + 0}) {Text("2")}
+                            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+                            .background(Capsule().fill(primary))
+                            .foregroundColor(text)
+                        Button(action: {() -> () in x = Int(x/10)}) {Label("test", systemImage: "delete.left").labelStyle(.iconOnly)}
+                            .padding(EdgeInsets(top: 20, leading: 35, bottom: 20, trailing: 35))
+                            .background(Capsule().fill(primary))
+                            .foregroundColor(text)
                     }
                 }
+                .padding(10)
+                .background(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)).fill(secondary))
             }
         }
     }
