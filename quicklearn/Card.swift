@@ -20,7 +20,7 @@ struct CardTemplate {
     var vars : [String]
     var gen : [ClosedRange<Int>]
     var eq : String
-    var ans : (Int, Int...) -> (Bool)
+    var ans : (Int, [Int]) -> (Bool)
 }
 
 struct CardData {
@@ -36,7 +36,7 @@ var cards = [
         type: CardType.Arithmetic,
         template: CardTemplate(
             vars: ["x", "y"], gen: [1...9, 1...9], eq: "x + y",
-            ans: {(ans, vars : Int...) -> Bool in return vars[0] + vars[1] == ans}
+            ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
     CardData(
@@ -44,7 +44,7 @@ var cards = [
         type: CardType.Arithmetic,
         template: CardTemplate(
             vars: ["x", "y"], gen: [1...99, 1...9], eq: "x + y",
-            ans: {(ans: Int, vars : Int...) -> Bool in return vars[0] + vars[1] == ans}
+            ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
     CardData(
@@ -52,7 +52,7 @@ var cards = [
         type: CardType.Arithmetic,
         template: CardTemplate(
             vars: ["x", "y"], gen: [1...99, 1...99], eq: "x + y",
-            ans: {(ans: Int, vars : Int...) -> Bool in return vars[0] + vars[1] == ans}
+            ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
     CardData(
@@ -60,7 +60,7 @@ var cards = [
         type: CardType.Arithmetic,
         template: CardTemplate(
             vars: ["x", "y"], gen: [1...9, 1...9], eq: "x * y",
-            ans: {(ans: Int, vars : Int...) -> Bool in return vars[0] * vars[1] == ans}
+            ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
     CardData(
@@ -68,7 +68,7 @@ var cards = [
         type: CardType.Arithmetic,
         template: CardTemplate(
             vars: ["x", "y"], gen: [1...99, 1...9], eq: "x * y",
-            ans: {(ans: Int, vars : Int...) -> Bool in return vars[0] * vars[1] == ans}
+            ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
     CardData(
@@ -76,7 +76,7 @@ var cards = [
         type: CardType.Arithmetic,
         template: CardTemplate(
             vars: ["x", "y"], gen: [1...99, 1...99], eq: "x * y",
-            ans: {(ans: Int, vars : Int...) -> Bool in return vars[0] * vars[1] == ans}
+            ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
 ]
@@ -112,8 +112,8 @@ struct CardPage : View {
     let accent = Color(hex: 0x3377FF)
     
     @State private var ans: Int = 0
-    private var state: [Int] = []
-    private var eq: String
+    @State private var state: [Int] = []
+    @State private var eq: String = ""
     
     func pressNumPadButton(button: String) {
         switch button {
@@ -124,15 +124,27 @@ struct CardPage : View {
         default:
             ans = 10*ans + Int(button)!
         }
+        if abs(ans) >= 1000000 {
+            ans = Int(ans/10)
+        }
+        if card.template.ans(ans, state) {
+            reset()
+        }
+    }
+    
+    func reset() {
+        eq = card.template.eq
+        state = []
+        for i in 0..<card.template.gen.count {
+            state.append(Int.random(in: card.template.gen[i]))
+            print(state)
+            eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
+        }
     }
     
     init(card: CardData) {
-        eq = card.template.eq
-        for i in 0..<card.template.gen.count {
-            state.append(Int.random(in: card.template.gen[i]))
-            eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
-        }
         self.card = card
+        reset()
     }
     
     var body: some View {
@@ -152,17 +164,19 @@ struct CardPage : View {
                     ForEach(0..<3) { n1 in
                         GridRow {
                             ForEach(1..<4) { n2 in
-                                Button(action: {pressNumPadButton("\(3*n1 + n2)")})
-                                    .buttonStyle(NumPadButtonStyle())
+                                Button(action: {pressNumPadButton(button: "\(3*n1 + n2)")}) {
+                                    Text("\(3*n1 + n2)")
+                                }
+                                .buttonStyle(NumPadButtonStyle())
                             }
                         }
                     }
                     GridRow {
-                        Button(action: {pressNumPadButton("-")}) {Text("-")}
+                        Button(action: {pressNumPadButton(button: "-")}) {Text("-")}
                             .buttonStyle(NumPadButtonStyle())
-                        Button(action: {pressNumPadButton("0")}) {Text("0")}
+                        Button(action: {pressNumPadButton(button: "0")}) {Text("0")}
                             .buttonStyle(NumPadButtonStyle())
-                                    Button(action: {pressNumPadButton("delete")}) {Label("", systemImage: "delete.left").labelStyle(.iconOnly)}
+                        Button(action: {pressNumPadButton(button: "delete")}) {Label("", systemImage: "delete.left").labelStyle(.iconOnly)}
                             .buttonStyle(NumPadButtonStyle())
                     }
                 }
@@ -185,6 +199,12 @@ struct NumPadButtonStyle: ButtonStyle {
             .background(Capsule().fill(primary))
             .foregroundColor(text)
             .font(.system(size: 24))
+            .phaseAnimator([1, 1.25, 1]) { view, phase in
+                view
+                    .scaleEffect(phase)
+            } animation: { phase in
+                    .snappy(duration: 0.2)
+            }
     }
 }
 
