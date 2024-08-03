@@ -14,6 +14,7 @@ extension Color {
 
 enum CardType {
     case Arithmetic
+    case Algebra
 }
 
 struct Colors {
@@ -51,7 +52,7 @@ var cards = [
         title: "2-1 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [1...99, 1...9], eq: "x + y",
+            vars: ["x", "y"], gen: [10...99, 1...9], eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
@@ -59,7 +60,15 @@ var cards = [
         title: "2-2 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [1...99, 1...99], eq: "x + y",
+            vars: ["x", "y"], gen: [10...99, 10...99], eq: "x + y",
+            ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
+        )
+    ),
+    CardData(
+        title: "3-3 Addition",
+        type: CardType.Arithmetic,
+        template: CardTemplate(
+            vars: ["x", "y"], gen: [100...999, 100...999], eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
@@ -75,7 +84,7 @@ var cards = [
         title: "2-1 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [1...99, 1...9], eq: "x ⋅ y",
+            vars: ["x", "y"], gen: [10...99, 1...9], eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -83,8 +92,24 @@ var cards = [
         title: "2-2 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [1...99, 1...99], eq: "x ⋅ y",
+            vars: ["x", "y"], gen: [10...99, 10...99], eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
+        )
+    ),
+    CardData(
+        title: "3-3 Multiplication",
+        type: CardType.Arithmetic,
+        template: CardTemplate(
+            vars: ["x", "y"], gen: [100...999, 100...999], eq: "x ⋅ y",
+            ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
+        )
+    ),
+    CardData(
+        title: "Linear Equations",
+        type: CardType.Algebra,
+        template: CardTemplate(
+            vars: ["b", "c", "a"], gen: [1...9, 1...9, 1...9], eq: "ax + b = c",
+            ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans}
         )
     ),
 ]
@@ -155,8 +180,12 @@ struct CardPage : View {
                 Spacer()
                 HStack {
                     Spacer()
-                    Text("\(eq) = \(ans)")
-                        .font(.system(size: 32))
+                    VStack {
+                        Text("\(eq)")
+                            .font(.system(size: 32))
+                        Text("\(ans)")
+                            .font(.system(size: 24))
+                    }
                     Spacer()
                 }
                 .padding(50)
@@ -212,9 +241,13 @@ struct NumPadButtonStyle: ButtonStyle {
 //            .previewLayout(.fixed(width: 400, height: 60))
 //    }
 //}
+//
+//struct CardPage_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CardPage(card: cards[0])
+//    }
+//}
 
-struct CardPage_Previews: PreviewProvider {
-    static var previews: some View {
-        CardPage(card: cards[0])
-    }
+#Preview {
+    ContentView(cards: cards)
 }

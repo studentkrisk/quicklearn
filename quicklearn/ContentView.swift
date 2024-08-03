@@ -26,6 +26,5 @@ struct ContentView: View {
 
 
 #Preview {
-    
     ContentView(cards: cards)
 }
