@@ -30,6 +30,7 @@ struct CardTemplate {
     var gen : [([Int]) -> [Int]]
     var eq : String
     var ans : (Int, [Int]) -> (Bool)
+    var num_ans: Int = 1
 }
 
 struct CardData {
@@ -149,7 +150,8 @@ var cards = [
                 {(state: [Int]) -> [Int] in return Array(1...9)},
                 {(state: [Int]) -> [Int] in return Array(1...9).map({state[0]*$0+state[1]})}],
             eq: "ax + b = c",
-            ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans}
+            ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans},
+            num_ans: 2
         )
     ),
 ]
@@ -178,9 +180,10 @@ struct CardView : View {
 struct CardPage : View {
     var card : CardData
     
-    @State private var ans: Int = 0
+    @State private var ans: [Int] = []
     @State private var state: [Int] = []
     @State private var eq: String
+    @State private var cur: Int = 0
     
     init(card: CardData) {
         self.card = card
@@ -189,17 +192,21 @@ struct CardPage : View {
     
     func pressNumPadButton(button: String) {
         switch button {
+        case "next":
+            cur += 1
+        case "last":
+            cur += 1
         case "-":
-            ans *= -1
+            ans[cur] *= -1
         case "delete":
-            ans = Int(ans/10)
+            ans[cur] = Int(ans[cur]/10)
         default:
-            ans = 10*ans + Int(button)!
+            ans[cur] = 10*ans[cur] + Int(button)!
         }
-        if abs(ans) >= 1000000 {
-            ans = Int(ans/10)
+        if abs(ans[cur]) >= 1000000 {
+            ans[cur] = Int(ans[cur]/10)
         }
-        if card.template.ans(ans, state) {
+        if card.template.ans(ans[cur], state) {
             reset()
         }
     }
@@ -207,7 +214,7 @@ struct CardPage : View {
     func reset() {
         eq = card.template.eq
         state = []
-        ans = 0
+        ans = Array(1...card.template.num_ans).map({0*$0})
         for i in 0..<card.template.gen.count {
             state.append(card.template.gen[i](state).randomElement()!)
             eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
@@ -223,8 +230,10 @@ struct CardPage : View {
                     VStack {
                         Text("\(eq)")
                             .font(.system(size: 32))
-                        Text("\(ans)")
-                            .font(.system(size: 24))
+                        ForEach(1..<card.template.num_ans) { n in
+                            Text("\(ans[n])")
+                                .font(.system(size: 24))
+                        }
                     }
                     Spacer()
                 }
@@ -262,7 +271,7 @@ struct CardPage : View {
                             .buttonStyle(NumPadButtonStyle())
                         Button(action: {pressNumPadButton(button: "next")}) {Label("", systemImage: "arrowtriangle.right").labelStyle(.iconOnly)}
                             .buttonStyle(NumPadButtonStyle())
-                        Button(action: {pressNumPadButton(button: "next")}) {Label("", systemImage: "arrowtriangle.right").labelStyle(.iconOnly)}
+                        Button(action: {pressNumPadButton(button: "fraction")}) {Label("", systemImage: "divide").labelStyle(.iconOnly)}
                             .buttonStyle(NumPadButtonStyle())
                     }
                 }
