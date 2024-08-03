@@ -27,7 +27,7 @@ struct Colors {
 
 struct CardTemplate {
     var vars : [String]
-    var gen : [ClosedRange<Int>]
+    var gen : [Array]
     var eq : String
     var ans : (Int, [Int]) -> (Bool)
 }
@@ -39,12 +39,33 @@ struct CardData {
     var template : CardTemplate
 }
 
+func factors(of n: Int) -> [Int] {
+    precondition(n > 0, "n must be positive")
+    let sqrtn = Int(Double(n).squareRoot())
+    var factors: [Int] = []
+    factors.reserveCapacity(2 * sqrtn)
+    for i in 1...sqrtn {
+        if n % i == 0 {
+            factors.append(i)
+        }
+    }
+    var j = factors.count - 1
+    if factors[j] * factors[j] == n {
+        j -= 1
+    }
+    while j >= 0 {
+        factors.append(n / factors[j])
+        j -= 1
+    }
+    return factors
+}
+
 var cards = [
     CardData(
         title: "1-1 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [1...9, 1...9], eq: "x + y",
+            vars: ["x", "y"], gen: [Array(1...9), Array(1...9)], eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
@@ -52,7 +73,7 @@ var cards = [
         title: "2-1 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [10...99, 1...9], eq: "x + y",
+            vars: ["x", "y"], gen: [Array(10...99), Array(10...99)], eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
@@ -60,7 +81,7 @@ var cards = [
         title: "2-2 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [10...99, 10...99], eq: "x + y",
+            vars: ["x", "y"], gen: [Array(10...99), Array(1...9)], eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
@@ -68,7 +89,7 @@ var cards = [
         title: "3-3 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [100...999, 100...999], eq: "x + y",
+            vars: ["x", "y"], gen: [[100, 999, 1], [100, 999, 1]], eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
@@ -76,7 +97,7 @@ var cards = [
         title: "1-1 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [1...9, 1...9], eq: "x ⋅ y",
+            vars: ["x", "y"], gen: [[1, 9, 1], [1, 9, 1]], eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -84,7 +105,7 @@ var cards = [
         title: "2-1 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [10...99, 1...9], eq: "x ⋅ y",
+            vars: ["x", "y"], gen: [[10, 99, 1], [1, 9, 1]], eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -92,7 +113,7 @@ var cards = [
         title: "2-2 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [10...99, 10...99], eq: "x ⋅ y",
+            vars: ["x", "y"], gen: [[10, 99, 1], [10, 99, 1]], eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -100,7 +121,7 @@ var cards = [
         title: "3-3 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [100...999, 100...999], eq: "x ⋅ y",
+            vars: ["x", "y"], gen: [[100, 999, 1], [100, 999, 1]], eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -108,7 +129,7 @@ var cards = [
         title: "Linear Equations",
         type: CardType.Algebra,
         template: CardTemplate(
-            vars: ["b", "c", "a"], gen: [1...9, 1...9, 1...9], eq: "ax + b = c",
+            vars: ["b", "c", "a"], gen: [[1, 9, 1], [1, 9, 1], {(b: Int, c: Int) -> [Int] as return factors(of: c-b)}], eq: "ax + b = c",
             ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans}
         )
     ),
