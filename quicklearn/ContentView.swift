@@ -1,20 +1,26 @@
 import SwiftUI
  
 struct ContentView: View {
-    let cards : [CardData]
+    @State private var searchText = ""
+    
+    let cards: [CardData]
+    var searchResults : [CardData] {
+        if searchText.isEmpty {
+            return cards
+        } else {
+            return cards.filter { $0.title.contains(searchText) }
+        }
+    }
+    
     var body: some View {
         NavigationStack {
-            List(cards, id: \.self.title) { card in NavigationLink(destination: CardPage(card: card)) {
+            List(searchResults, id: \.self.title) { card in NavigationLink(destination: CardPage(card: card)) {
                     CardView(data: card)
                 }
             }
             .navigationTitle("Cards")
-            .toolbar {
-                Button(action: {}) {
-                    Image(systemName: "ellipsis.circle")
-                }
-            }
         }
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
     }
 }
 

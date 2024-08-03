@@ -16,6 +16,14 @@ enum CardType {
     case Arithmetic
 }
 
+struct Colors {
+    static let background = Color(hex: 0x080c14)
+    static let text = Color(hex: 0xE0F0FF)
+    static let primary = Color(hex: 0x3377FF)
+    static let secondary = Color(hex: 0x0c1a36)
+    static let accent = Color(hex: 0x3377FF)
+}
+
 struct CardTemplate {
     var vars : [String]
     var gen : [ClosedRange<Int>]
@@ -105,12 +113,6 @@ struct CardView : View {
 struct CardPage : View {
     var card : CardData
     
-    let background = Color(hex: 0x080c14)
-    let text = Color(hex: 0xE0F0FF)
-    let primary = Color(hex: 0x3377FF)
-    let secondary = Color(hex: 0x0c1a36)
-    let accent = Color(hex: 0x3377FF)
-    
     @State private var ans: Int = 0
     @State private var state: [Int] = []
     @State private var eq: String
@@ -181,23 +183,18 @@ struct CardPage : View {
                     }
                 }
                 .padding(10)
-                .background(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)).fill(secondary))
-            }.background(background)
+                .background(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)).fill(Colors.secondary))
+            }.background(Colors.background)
         }.onAppear(perform: reset)
     }
 }
 
 struct NumPadButtonStyle: ButtonStyle {
-    let background = Color(hex: 0x080c14)
-    let text = Color(hex: 0xE0F0FF)
-    let primary = Color(hex: 0x3377FF)
-    let secondary = Color(hex: 0x0c1a36)
-    let accent = Color(hex: 0x3377FF)
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
-            .background(Capsule().fill(primary))
-            .foregroundColor(text)
+            .background(Capsule().fill(Colors.primary))
+            .foregroundColor(Colors.text)
             .font(.system(size: 24))
             .phaseAnimator([1, 1.25, 1]) { view, phase in
                 view
