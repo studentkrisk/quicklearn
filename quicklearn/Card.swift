@@ -59,7 +59,7 @@ var cards = [
         title: "1-1 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [1...9, 1...9], eq: "x * y",
+            vars: ["x", "y"], gen: [1...9, 1...9], eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -67,7 +67,7 @@ var cards = [
         title: "2-1 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [1...99, 1...9], eq: "x * y",
+            vars: ["x", "y"], gen: [1...99, 1...9], eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -75,7 +75,7 @@ var cards = [
         title: "2-2 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [1...99, 1...99], eq: "x * y",
+            vars: ["x", "y"], gen: [1...99, 1...99], eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -115,6 +115,11 @@ struct CardPage : View {
     @State private var state: [Int] = []
     @State private var eq: String
     
+    init(card: CardData) {
+        self.card = card
+        self.eq = card.template.eq
+    }
+    
     func pressNumPadButton(button: String) {
         switch button {
         case "-":
@@ -128,26 +133,18 @@ struct CardPage : View {
             ans = Int(ans/10)
         }
         if card.template.ans(ans, state) {
-            
+            reset()
         }
     }
     
     func reset() {
         eq = card.template.eq
+        state = []
+        ans = 0
         for i in 0..<card.template.gen.count {
             state.append(Int.random(in: card.template.gen[i]))
-            if let last = state.last {
-                eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
-            } else {
-                print("=(")
-            }
+            eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
         }
-    }
-    
-    init(card: CardData) {
-        self.card = card
-        eq = card.template.eq
-        reset()
     }
     
     var body: some View {
@@ -167,8 +164,8 @@ struct CardPage : View {
                     ForEach(0..<3) { n1 in
                         GridRow {
                             ForEach(1..<4) { n2 in
-                                Button(action: {pressNumPadButton(button: "\(3*n1 + n2)")}) {
-                                    Text("\(3*n1 + n2)")
+                                Button("\(3*n1 + n2)") {
+                                    pressNumPadButton(button: "\(3*n1 + n2)")
                                 }
                                 .buttonStyle(NumPadButtonStyle())
                             }
@@ -186,7 +183,7 @@ struct CardPage : View {
                 .padding(10)
                 .background(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)).fill(secondary))
             }.background(background)
-        }
+        }.onAppear(perform: reset)
     }
 }
 
