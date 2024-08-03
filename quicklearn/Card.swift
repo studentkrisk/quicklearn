@@ -113,7 +113,7 @@ struct CardPage : View {
     
     @State private var ans: Int = 0
     @State private var state: [Int] = []
-    @State private var eq: String = ""
+    @State private var eq: String
     
     func pressNumPadButton(button: String) {
         switch button {
@@ -134,16 +134,19 @@ struct CardPage : View {
     
     func reset() {
         eq = card.template.eq
-        state = []
         for i in 0..<card.template.gen.count {
             state.append(Int.random(in: card.template.gen[i]))
-            print(state)
-//            eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
+            if let last = state.last {
+                eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
+            } else {
+                print("=(")
+            }
         }
     }
     
     init(card: CardData) {
         self.card = card
+        eq = card.template.eq
         reset()
     }
     
