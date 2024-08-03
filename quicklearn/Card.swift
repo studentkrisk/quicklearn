@@ -26,11 +26,11 @@ struct Colors {
 }
 
 struct CardTemplate {
-    var vars : [String]
-    var gen : [([Int]) -> [Int]]
-    var eq : String
-    var ans : (Int, [Int]) -> (Bool)
-    var num_ans: Int = 1
+    let vars : [String]
+    let gen : [([Int]) -> [Int]]
+    let eq : String
+    let ans : (Int, [Int]) -> (Bool)
+    let num_ans: Int = 1
 }
 
 struct CardData {
@@ -154,6 +154,32 @@ var cards = [
             num_ans: 2
         )
     ),
+    CardData(
+        title: "Factoring Quadratics",
+        type: CardType.Arithmetic,
+        template: CardTemplate(
+            vars: ["a", "b", "c"], gen: [
+                {(state: [Int]) -> [Int] in return Array(1...9)},
+                {(state: [Int]) -> [Int] in return Array(1...9)},
+                {(state: [Int]) -> [Int] in return Array(1...9)}],
+            eq: "ax^2 + bx + c",
+            ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans},
+            num_ans: 2
+        )
+    ),
+    CardData(
+        title: "Factoring Triadics", // idk 
+        type: CardType.Arithmetic,
+        template: CardTemplate(
+            vars: ["a", "b", "c"], gen: [
+                {(state: [Int]) -> [Int] in return Array(1...9)},
+                {(state: [Int]) -> [Int] in return Array(1...9)},
+                {(state: [Int]) -> [Int] in return Array(1...9)}],
+            eq: "ax^2 + bx + c",
+            ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans},
+            num_ans: 2
+        )
+    ),
 ]
 
 struct CardView : View {
@@ -230,7 +256,7 @@ struct CardPage : View {
                     VStack {
                         Text("\(eq)")
                             .font(.system(size: 32))
-                        ForEach(1..<card.template.num_ans) { n in
+                        ForEach(1..<1+card.template.num_ans) { n in
                             Text("\(ans[n])")
                                 .font(.system(size: 24))
                         }
