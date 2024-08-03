@@ -39,33 +39,6 @@ struct CardData {
     var template : CardTemplate
 }
 
-func factors(of n: Int) -> [Int] {
-    precondition(n >= 0, "n must be positive")
-    if n == 0 {
-        return [1]
-    }
-    let sqrtn = Int(Double(n).squareRoot())
-    var factors: [Int] = []
-    factors.reserveCapacity(2 * sqrtn)
-    for i in 1...sqrtn {
-        if n % i == 0 {
-            factors.append(i)
-        }
-    }
-    var j = factors.count - 1
-    if factors[j] * factors[j] == n {
-        j -= 1
-    }
-    while j >= 0 {
-        factors.append(n / factors[j])
-        j -= 1
-    }
-    if (factors.count <= 2) {
-        factors = factors.filter({$0 != 1})
-    }
-    return factors
-}
-
 var cards = [
     CardData(
         title: "1-1 Addition",
@@ -159,12 +132,24 @@ var cards = [
         title: "Linear Equations",
         type: CardType.Algebra,
         template: CardTemplate(
-            vars: ["c", "b", "a"], gen: [
-                {(state: [Int]) -> [Int] in return Array(2...9)},
-                {(state: [Int]) -> [Int] in return [1,2,2,3,3,4,4,4,5,5,6,6,6,6,7,7,8,8,8,8,9,9,9].filter({$0 != state[0]}).map({state[0]-$0})},
-                {(state: [Int]) -> [Int] in return factors(of: abs(state[0] - state[1]))}],
+            vars: ["a", "b", "c"], gen: [
+                {(state: [Int]) -> [Int] in return Array(1...9)},
+                {(state: [Int]) -> [Int] in return Array(1...9)},
+                {(state: [Int]) -> [Int] in return Array(1...9).map({state[0]*$0+state[1]})}],
             eq: "ax + b = c",
-            ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[0] - vars[1])/vars[2] == ans}
+            ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans}
+        )
+    ),
+    CardData(
+        title: "Factoring Semiprimes",
+        type: CardType.Arithmetic,
+        template: CardTemplate(
+            vars: ["a"], gen: [
+                {(state: [Int]) -> [Int] in return Array(1...9)},
+                {(state: [Int]) -> [Int] in return Array(1...9)},
+                {(state: [Int]) -> [Int] in return Array(1...9).map({state[0]*$0+state[1]})}],
+            eq: "ax + b = c",
+            ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans}
         )
     ),
 ]
@@ -252,17 +237,32 @@ struct CardPage : View {
                             ForEach(1..<4) { n2 in
                                 Button("\(3*n1 + n2)") {
                                     pressNumPadButton(button: "\(3*n1 + n2)")
-                                }
-                                .buttonStyle(NumPadButtonStyle())
+                                }.buttonStyle(NumPadButtonStyle())
+                            }
+                            switch n1 {
+                            case 0:
+                                Button(action: {pressNumPadButton(button: "delete")}) {Label("", systemImage: "delete.left").labelStyle(.iconOnly)}
+                                    .buttonStyle(NumPadButtonStyle())
+                            case 1:
+                                Button("-") {pressNumPadButton(button: "-")}
+                                    .buttonStyle(NumPadButtonStyle())
+                            case 2:
+                                Button(".") {pressNumPadButton(button: ".")}
+                                    .buttonStyle(NumPadButtonStyle())
+                            default:
+                                Button("-") {pressNumPadButton(button: "-")}
+                                    .buttonStyle(NumPadButtonStyle())
                             }
                         }
                     }
                     GridRow {
-                        Button(action: {pressNumPadButton(button: "-")}) {Text("-")}
+                        Button(action: {pressNumPadButton(button: "last")}) {Label("", systemImage: "arrowtriangle.left").labelStyle(.iconOnly)}
                             .buttonStyle(NumPadButtonStyle())
-                        Button(action: {pressNumPadButton(button: "0")}) {Text("0")}
+                        Button("0") {pressNumPadButton(button: "0")}
                             .buttonStyle(NumPadButtonStyle())
-                        Button(action: {pressNumPadButton(button: "delete")}) {Label("", systemImage: "delete.left").labelStyle(.iconOnly)}
+                        Button(action: {pressNumPadButton(button: "next")}) {Label("", systemImage: "arrowtriangle.right").labelStyle(.iconOnly)}
+                            .buttonStyle(NumPadButtonStyle())
+                        Button(action: {pressNumPadButton(button: "next")}) {Label("", systemImage: "arrowtriangle.right").labelStyle(.iconOnly)}
                             .buttonStyle(NumPadButtonStyle())
                     }
                 }
@@ -276,7 +276,7 @@ struct CardPage : View {
 struct NumPadButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+            .frame(width: 75, height: 60, alignment: Alignment.center)
             .background(Capsule().fill(Colors.primary))
             .foregroundColor(Colors.text)
             .font(.system(size: 24))
