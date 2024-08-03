@@ -128,7 +128,7 @@ struct CardPage : View {
             ans = Int(ans/10)
         }
         if card.template.ans(ans, state) {
-            reset()
+            
         }
     }
     
@@ -138,7 +138,7 @@ struct CardPage : View {
         for i in 0..<card.template.gen.count {
             state.append(Int.random(in: card.template.gen[i]))
             print(state)
-            eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
+//            eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
         }
     }
     
