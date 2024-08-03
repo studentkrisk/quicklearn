@@ -27,7 +27,7 @@ struct Colors {
 
 struct CardTemplate {
     var vars : [String]
-    var gen : [Array]
+    var gen : [([Int]) -> [Int]]
     var eq : String
     var ans : (Int, [Int]) -> (Bool)
 }
@@ -40,7 +40,10 @@ struct CardData {
 }
 
 func factors(of n: Int) -> [Int] {
-    precondition(n > 0, "n must be positive")
+    precondition(n >= 0, "n must be positive")
+    if n == 0 {
+        return [1]
+    }
     let sqrtn = Int(Double(n).squareRoot())
     var factors: [Int] = []
     factors.reserveCapacity(2 * sqrtn)
@@ -57,6 +60,9 @@ func factors(of n: Int) -> [Int] {
         factors.append(n / factors[j])
         j -= 1
     }
+    if (factors.count <= 2) {
+        factors = factors.filter({$0 != 1})
+    }
     return factors
 }
 
@@ -65,7 +71,10 @@ var cards = [
         title: "1-1 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [Array(1...9), Array(1...9)], eq: "x + y",
+            vars: ["x", "y"], gen: [
+                {(state: [Int]) -> [Int] in return Array(1...9)},
+                {(state: [Int]) -> [Int] in return Array(1...9)}],
+            eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
@@ -73,7 +82,10 @@ var cards = [
         title: "2-1 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [Array(10...99), Array(10...99)], eq: "x + y",
+            vars: ["x", "y"], gen: [
+                {(state: [Int]) -> [Int] in return Array(10...99)},
+                {(state: [Int]) -> [Int] in return Array(1...9)}],
+            eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
@@ -81,7 +93,10 @@ var cards = [
         title: "2-2 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [Array(10...99), Array(1...9)], eq: "x + y",
+            vars: ["x", "y"], gen: [
+                {(state: [Int]) -> [Int] in return Array(10...99)},
+                {(state: [Int]) -> [Int] in return Array(10...99)}],
+            eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
@@ -89,7 +104,10 @@ var cards = [
         title: "3-3 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [[100, 999, 1], [100, 999, 1]], eq: "x + y",
+            vars: ["x", "y"], gen: [
+                {(state: [Int]) -> [Int] in return Array(100...999)},
+                {(state: [Int]) -> [Int] in return Array(100...999)}],
+            eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
@@ -97,7 +115,10 @@ var cards = [
         title: "1-1 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [[1, 9, 1], [1, 9, 1]], eq: "x ⋅ y",
+            vars: ["x", "y"], gen: [
+                {(state: [Int]) -> [Int] in return Array(1...9)},
+                {(state: [Int]) -> [Int] in return Array(1...9)}],
+            eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -105,7 +126,10 @@ var cards = [
         title: "2-1 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [[10, 99, 1], [1, 9, 1]], eq: "x ⋅ y",
+            vars: ["x", "y"], gen: [
+                {(state: [Int]) -> [Int] in return Array(10...99)},
+                {(state: [Int]) -> [Int] in return Array(1...9)}],
+            eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -113,7 +137,10 @@ var cards = [
         title: "2-2 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [[10, 99, 1], [10, 99, 1]], eq: "x ⋅ y",
+            vars: ["x", "y"], gen: [
+                {(state: [Int]) -> [Int] in return Array(10...99)},
+                {(state: [Int]) -> [Int] in return Array(10...99)}],
+            eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -121,7 +148,10 @@ var cards = [
         title: "3-3 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [[100, 999, 1], [100, 999, 1]], eq: "x ⋅ y",
+            vars: ["x", "y"], gen: [
+                {(state: [Int]) -> [Int] in return Array(100...999)},
+                {(state: [Int]) -> [Int] in return Array(100...999)}],
+            eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
     ),
@@ -129,8 +159,12 @@ var cards = [
         title: "Linear Equations",
         type: CardType.Algebra,
         template: CardTemplate(
-            vars: ["b", "c", "a"], gen: [[1, 9, 1], [1, 9, 1], {(b: Int, c: Int) -> [Int] as return factors(of: c-b)}], eq: "ax + b = c",
-            ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans}
+            vars: ["c", "b", "a"], gen: [
+                {(state: [Int]) -> [Int] in return Array(2...9)},
+                {(state: [Int]) -> [Int] in return [1,2,2,3,3,4,4,4,5,5,6,6,6,6,7,7,8,8,8,8,9,9,9].filter({$0 != state[0]}).map({state[0]-$0})},
+                {(state: [Int]) -> [Int] in return factors(of: abs(state[0] - state[1]))}],
+            eq: "ax + b = c",
+            ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[0] - vars[1])/vars[2] == ans}
         )
     ),
 ]
@@ -190,7 +224,7 @@ struct CardPage : View {
         state = []
         ans = 0
         for i in 0..<card.template.gen.count {
-            state.append(Int.random(in: card.template.gen[i]))
+            state.append(card.template.gen[i](state).randomElement()!)
             eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
         }
     }
