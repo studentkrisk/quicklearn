@@ -27,10 +27,10 @@ struct Colors {
 
 struct CardTemplate {
     let vars : [String]
-    let gen : [([Int]) -> [Int]]
+    let gen : () -> ([Int])
     let eq : String
     let ans : (Int, [Int]) -> (Bool)
-    let num_ans: Int = 1
+    var num_ans: Int = 1
 }
 
 struct CardData {
@@ -45,10 +45,8 @@ var cards = [
         title: "1-1 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [
-                {(state: [Int]) -> [Int] in return Array(1...9)},
-                {(state: [Int]) -> [Int] in return Array(1...9)}],
-            eq: "x + y",
+            vars: ["x", "y"], gen: {return [Int.random(in: 1...9), Int.random(in: 1...9)]}
+            , eq: "%d + %d",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
     ),
@@ -56,9 +54,7 @@ var cards = [
         title: "2-1 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [
-                {(state: [Int]) -> [Int] in return Array(10...99)},
-                {(state: [Int]) -> [Int] in return Array(1...9)}],
+            vars: ["x", "y"], gen: {return [Int.random(in: 10...99), Int.random(in: 1...9)].shuffled()},
             eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
@@ -67,9 +63,7 @@ var cards = [
         title: "2-2 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [
-                {(state: [Int]) -> [Int] in return Array(10...99)},
-                {(state: [Int]) -> [Int] in return Array(10...99)}],
+            vars: ["x", "y"], gen: {return [Int.random(in: 10...99), Int.random(in: 10...99)]},
             eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
@@ -78,9 +72,7 @@ var cards = [
         title: "3-3 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [
-                {(state: [Int]) -> [Int] in return Array(100...999)},
-                {(state: [Int]) -> [Int] in return Array(100...999)}],
+            vars: ["x", "y"], gen: {return [Int.random(in: 100...999), Int.random(in: 100...999)]},
             eq: "x + y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] + vars[1] == ans}
         )
@@ -89,9 +81,7 @@ var cards = [
         title: "1-1 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [
-                {(state: [Int]) -> [Int] in return Array(1...9)},
-                {(state: [Int]) -> [Int] in return Array(1...9)}],
+            vars: ["x", "y"], gen: {return [Int.random(in: 1...9), Int.random(in: 1...9)]},
             eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
@@ -100,9 +90,7 @@ var cards = [
         title: "2-1 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [
-                {(state: [Int]) -> [Int] in return Array(10...99)},
-                {(state: [Int]) -> [Int] in return Array(1...9)}],
+            vars: ["x", "y"], gen: {return [Int.random(in: 10...99), Int.random(in: 1...9)].shuffled()},
             eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
@@ -111,9 +99,7 @@ var cards = [
         title: "2-2 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [
-                {(state: [Int]) -> [Int] in return Array(10...99)},
-                {(state: [Int]) -> [Int] in return Array(10...99)}],
+            vars: ["x", "y"], gen: {return [Int.random(in: 10...99), Int.random(in: 10...99)]},
             eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
@@ -122,9 +108,7 @@ var cards = [
         title: "3-3 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["x", "y"], gen: [
-                {(state: [Int]) -> [Int] in return Array(100...999)},
-                {(state: [Int]) -> [Int] in return Array(100...999)}],
+            vars: ["x", "y"], gen: {return [Int.random(in: 100...999), Int.random(in: 100...999)]},
             eq: "x ⋅ y",
             ans: {(ans: Int, vars : [Int]) -> Bool in return vars[0] * vars[1] == ans}
         )
@@ -133,11 +117,11 @@ var cards = [
         title: "Linear Equations",
         type: CardType.Algebra,
         template: CardTemplate(
-            vars: ["a", "b", "c"], gen: [
-                {(state: [Int]) -> [Int] in return Array(1...9)},
-                {(state: [Int]) -> [Int] in return Array(1...9)},
-                {(state: [Int]) -> [Int] in return Array(1...9).map({state[0]*$0+state[1]})}],
-            eq: "ax + b = c",
+            vars: ["a", "b", "c"], gen: {
+                let a = Int.random(in: 1...9)
+                let b = Int.random(in: 1...9)
+                return [a, b, Int.random(in: 1...9)*a + b]
+            }, eq: "ax + b = c",
             ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans}
         )
     ),
@@ -145,10 +129,7 @@ var cards = [
         title: "Factoring Semiprimes",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["a"], gen: [
-                {(state: [Int]) -> [Int] in return Array(1...9)},
-                {(state: [Int]) -> [Int] in return Array(1...9)},
-                {(state: [Int]) -> [Int] in return Array(1...9).map({state[0]*$0+state[1]})}],
+            vars: ["a"], gen: {[]},
             eq: "ax + b = c",
             ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans},
             num_ans: 2
@@ -158,23 +139,17 @@ var cards = [
         title: "Factoring Quadratics",
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["a", "b", "c"], gen: [
-                {(state: [Int]) -> [Int] in return Array(1...9)},
-                {(state: [Int]) -> [Int] in return Array(1...9)},
-                {(state: [Int]) -> [Int] in return Array(1...9)}],
+            vars: ["a", "b", "c"], gen: {[]},
             eq: "ax^2 + bx + c",
             ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans},
             num_ans: 2
         )
     ),
     CardData(
-        title: "Factoring Triadics", // idk 
+        title: "Factoring Triadics", // idk
         type: CardType.Arithmetic,
         template: CardTemplate(
-            vars: ["a", "b", "c"], gen: [
-                {(state: [Int]) -> [Int] in return Array(1...9)},
-                {(state: [Int]) -> [Int] in return Array(1...9)},
-                {(state: [Int]) -> [Int] in return Array(1...9)}],
+            vars: ["a", "b", "c"], gen: {[]},
             eq: "ax^2 + bx + c",
             ans: {(ans: Int, vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans},
             num_ans: 2
@@ -238,13 +213,11 @@ struct CardPage : View {
     }
     
     func reset() {
-        eq = card.template.eq
         state = []
         ans = Array(1...card.template.num_ans).map({0*$0})
-        for i in 0..<card.template.gen.count {
-            state.append(card.template.gen[i](state).randomElement()!)
-            eq = eq.replacingOccurrences(of: card.template.vars[i], with: String(state.last!))
-        }
+        print(ans)
+        state = card.template.gen()
+        eq = String(format: card.template.eq, state)
     }
     
     var body: some View {
@@ -256,9 +229,10 @@ struct CardPage : View {
                     VStack {
                         Text("\(eq)")
                             .font(.system(size: 32))
-                        ForEach(1..<1+card.template.num_ans) { n in
+                        ForEach(0..<card.template.num_ans, id: \.self) { n in
                             Text("\(ans[n])")
                                 .font(.system(size: 24))
+                                .foregroundStyle(Colors.text)
                         }
                     }
                     Spacer()
