@@ -35,7 +35,6 @@ struct CardTemplate {
 struct CardData {
     var title : String
     var type : CardType
-    var avg_time : Double?
     var template : CardTemplate
 }
 
@@ -133,6 +132,26 @@ var cards = [
         )
     ),
     CardData(
+        title: "Factoring Semiprimes",
+        type: CardType.Arithmetic,
+        template: CardTemplate(
+            gen: {[generatePrimes(to: 20).randomElement()! * generatePrimes(to: 20).randomElement()!]},
+            eq: "%d = ? ⋅ ?",
+            ans: {(ans: [Int], vars : [Int]) -> Bool in return (vars[0] == ans[0]*ans[1] && ans[0] != 1) && ans[1] != 1},
+            num_ans: 2
+        )
+    ),
+    CardData(
+        title: "Factoring Trientiprimes",
+        type: CardType.Arithmetic,
+        template: CardTemplate(
+            gen: {[generatePrimes(to: 15).randomElement()! * generatePrimes(to: 15).randomElement()! * generatePrimes(to: 15).randomElement()!]},
+            eq: "%d = ? ⋅ ? ⋅ ?",
+            ans: {(ans: [Int], vars : [Int]) -> Bool in return (vars[0] == ans[0]*ans[1]*ans[2] && ans[0] != 1) && ans[1] != 1 && ans[2] != 1},
+            num_ans: 3
+        )
+    ),
+    CardData(
         title: "Linear Equations",
         type: CardType.Algebra,
         template: CardTemplate(
@@ -145,18 +164,8 @@ var cards = [
         )
     ),
     CardData(
-        title: "Factoring Semiprimes",
-        type: CardType.Arithmetic,
-        template: CardTemplate(
-            gen: {[generatePrimes(to: 20).randomElement()! * generatePrimes(to: 20).randomElement()!]},
-            eq: "%d = ? ⋅ ?",
-            ans: {(ans: [Int], vars : [Int]) -> Bool in return (vars[0] == ans[0]*ans[1] && ans[0] != 1) && ans[1] != 1},
-            num_ans: 2
-        )
-    ),
-    CardData(
-        title: "Solving Quadratics (a=1)",
-        type: CardType.Arithmetic,
+        title: "Solving Quadratics",
+        type: CardType.Algebra,
         template: CardTemplate(
             gen: {
                 let x1 = Int.random(in: -10...10)
@@ -165,16 +174,6 @@ var cards = [
             },
             eq: "x² + %dx + %d = 0",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return (vars[0] == ans[0] + ans[1] && vars[1] == ans[0]*ans[1])},
-            num_ans: 2
-        )
-    ),
-    CardData(
-        title: "Factoring Triadics", // idk
-        type: CardType.Arithmetic,
-        template: CardTemplate(
-            gen: {[]},
-            eq: "ax^2 + bx + c",
-            ans: {(ans: [Int], vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans[0]},
             num_ans: 2
         )
     ),
@@ -188,8 +187,9 @@ struct CardView : View {
                 .font(.headline)
             Spacer()
             HStack {
-                if let time = data.avg_time {
-                    Label("\(time, specifier: "%.2f")", systemImage: "clock")
+                let avg_time = UserDefaults.standard.double(forKey: "\(data.title).avg_time")
+                if avg_time != 0 {
+                    Label("\(avg_time, specifier: "%.2f")", systemImage: "clock")
                 } else {
                     Label("—", systemImage: "clock")
                 }
@@ -208,11 +208,13 @@ struct CardPage : View {
     @State private var state: [Int] = []
     @State private var eq: String
     @State private var cur: Int = 0
+    @State var startTime: Date
     
     init(card: CardData) {
         self.card = card
         self.ans = Array(1...card.template.num_ans).map({0*$0})
         self.eq = card.template.eq
+        self.startTime = Date()
     }
     
     func pressNumPadButton(button: String) {
@@ -239,6 +241,9 @@ struct CardPage : View {
     }
     
     func reset() {
+        let avg_time = UserDefaults.standard.double(forKey: "\(card.title).avg_time")
+        UserDefaults.standard.set(avg_time + Date().timeIntervalSince(startTime) / (avg_time == 0 ? 1 : 2), forKey: "\(card.title).avg_time")
+        startTime = Date()
         state = []
         cur = 0
         ans = Array(1...card.template.num_ans).map({0*$0})
@@ -249,6 +254,7 @@ struct CardPage : View {
     var body: some View {
         NavigationStack {
             VStack {
+                Text("\(Date.now.timeIntervalSince(startTime))")
                 Spacer()
                 HStack {
                     Spacer()
