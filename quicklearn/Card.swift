@@ -15,6 +15,7 @@ extension Color {
 enum CardType {
     case Arithmetic
     case Algebra
+    case Calculus
 }
 
 struct Colors {
@@ -177,6 +178,36 @@ var cards = [
             num_ans: 2
         )
     ),
+    CardData(
+        title: "Power Rule (Naturals)",
+        type: CardType.Calculus,
+        template: CardTemplate(
+            gen: {[Int.random(in: 1...9), Int.random(in: 1...6)]},
+            eq: "d/dx %dx^%d",
+            ans: {(ans: [Int], vars : [Int]) -> Bool in return (ans[0]*ans[1] == vars[0] && ans[1]-1 == vars[1])},
+            num_ans: 2
+        )
+    ),
+    CardData(
+        title: "Power Rule (Integers)",
+        type: CardType.Calculus,
+        template: CardTemplate(
+            gen: {[Int.random(in: 1...9), [1, 2, 3, 4, 5, 6, -1, -2, -3].randomElement()!]},
+            eq: "d/dx %dx^%d",
+            ans: {(ans: [Int], vars : [Int]) -> Bool in return (ans[0]*ans[1] == vars[0] && ans[1]-1 == vars[1])},
+            num_ans: 2
+        )
+    ),
+    CardData(
+        title: "Power Rule (Rationals)",
+        type: CardType.Calculus,
+        template: CardTemplate(
+            gen: {[Int.random(in: 1...9), [1, 2, 3, 4, 5, 6, -1, -2, -3].randomElement()!]}, // need to refactor to add rationals later
+            eq: "d/dx %dx^%d",
+            ans: {(ans: [Int], vars : [Int]) -> Bool in return (ans[0]*ans[1] == vars[0] && ans[1]-1 == vars[1])},
+            num_ans: 2
+        )
+    ),
 ]
 
 struct CardView : View {
@@ -236,14 +267,15 @@ struct CardPage : View {
             ans[cur] = Int(ans[cur]/10)
         }
         if card.template.ans(ans, state) {
+            let avg_time = UserDefaults.standard.double(forKey: "\(card.title).avg_time")
+            UserDefaults.standard.set((avg_time + Date().timeIntervalSince(startTime)) / (avg_time == 0 ? 1 : 2), forKey: "\(card.title).avg_time")
+            startTime = Date.now
             reset()
         }
     }
     
     func reset() {
-        let avg_time = UserDefaults.standard.double(forKey: "\(card.title).avg_time")
-        UserDefaults.standard.set(avg_time + Date().timeIntervalSince(startTime) / (avg_time == 0 ? 1 : 2), forKey: "\(card.title).avg_time")
-        startTime = Date()
+        startTime = Date.now
         state = []
         cur = 0
         ans = Array(1...card.template.num_ans).map({0*$0})
@@ -254,7 +286,6 @@ struct CardPage : View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("\(Date.now.timeIntervalSince(startTime))")
                 Spacer()
                 HStack {
                     Spacer()
