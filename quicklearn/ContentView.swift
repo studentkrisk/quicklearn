@@ -14,12 +14,19 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            List(searchResults, id: \.self.title) { card in NavigationLink(destination: CardPage(card: card)) {
-                    CardView(data: card)
+            List {
+                Section(header: Text("My Cards")) {}
+                Section(header: Text("Default Cards")) {
+                    ForEach(searchResults, id: \.title) {card in
+                        NavigationLink(destination: CardPage(card: card)) {
+                            CardView(data: card)
+                        }
+                    }
                 }
             }
             .navigationTitle("Cards")
         }
+        .background(Colors.background)
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
     }
 }

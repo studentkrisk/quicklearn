@@ -240,12 +240,14 @@ struct CardPage : View {
     @State private var eq: String
     @State private var cur: Int = 0
     @State var startTime: Date
+    @State var avg_time_text: LocalizedStringKey
     
     init(card: CardData) {
         self.card = card
         self.ans = Array(1...card.template.num_ans).map({0*$0})
         self.eq = card.template.eq
         self.startTime = Date()
+        avg_time_text = ""
     }
     
     func pressNumPadButton(button: String) {
@@ -268,13 +270,22 @@ struct CardPage : View {
         }
         if card.template.ans(ans, state) {
             let avg_time = UserDefaults.standard.double(forKey: "\(card.title).avg_time")
-            UserDefaults.standard.set((avg_time + Date().timeIntervalSince(startTime)) / (avg_time == 0 ? 1 : 2), forKey: "\(card.title).avg_time")
+            if avg_time == 0 {
+                UserDefaults.standard.set((avg_time + Date().timeIntervalSince(startTime)), forKey: "\(card.title).avg_time")
+            } else {
+                UserDefaults.standard.set((avg_time*0.2 + Date().timeIntervalSince(startTime))*0.8, forKey: "\(card.title).avg_time")
+            }
             startTime = Date.now
             reset()
         }
     }
     
     func reset() {
+        let avg_time = UserDefaults.standard.double(forKey: "\(card.title).avg_time")
+        avg_time_text = "—"
+        if avg_time != 0 {
+            avg_time_text = "\(avg_time, specifier: "%.2f")"
+        }
         startTime = Date.now
         state = []
         cur = 0
@@ -286,22 +297,19 @@ struct CardPage : View {
     var body: some View {
         NavigationStack {
             VStack {
+                Label(avg_time_text, systemImage: "clock")
                 Spacer()
-                HStack {
-                    Spacer()
-                    VStack {
-                        Text("\(eq)")
-                            .font(.system(size: 32))
-                        HStack {
-                            ForEach(0..<ans.count) {
-                                Text("\(ans[$0])")
-                                    .font(.system(size: 24))
-                                    .foregroundStyle(Colors.text)
-                                    .fontWeight(cur == $0 ? .bold : .regular)
-                            }
+                VStack {
+                    Text("\(eq)")
+                        .font(.system(size: 32))
+                    HStack {
+                        ForEach(0..<ans.count) {
+                            Text("\(ans[$0])")
+                                .font(.system(size: 24))
+                                .foregroundStyle(Colors.text)
+                                .fontWeight(cur == $0 ? .bold : .regular)
                         }
                     }
-                    Spacer()
                 }
                 .padding(50)
                 .navigationBarTitle(Text(card.title))
@@ -343,8 +351,10 @@ struct CardPage : View {
                 }
                 .padding(10)
                 .background(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)).fill(Colors.secondary))
-            }.background(Colors.background)
-        }.onAppear(perform: reset)
+            }
+        }
+        .onAppear(perform: reset)
+        .background(Colors.background)
     }
 }
 
