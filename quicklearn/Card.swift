@@ -325,7 +325,8 @@ struct CardPage : View {
                 Spacer()
                 VStack {
                     LaTeX("\(eq)")
-                        .font(.system(size: 32))
+                        .font(.system(size: 64))
+                        .fontDesign(.rounded)
                     HStack {
                         ForEach(0..<ans.count) {
                             Text("\(ans[$0])")

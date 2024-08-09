@@ -8,31 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		A124F3F62C38D54900EA0D74 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124F3F52C38D54800EA0D74 /* Card.swift */; };
+		A1934BA52C66D2A200ADD74D /* LaTeXSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = A1934BA42C66D2A200ADD74D /* LaTeXSwiftUI */; };
 		A1E5C2C62C361DE800A84441 /* quicklearnApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5C2C52C361DE800A84441 /* quicklearnApp.swift */; };
 		A1E5C2C82C361DE800A84441 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5C2C72C361DE800A84441 /* ContentView.swift */; };
 		A1E5C2CA2C361E2700A84441 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1E5C2C92C361E2700A84441 /* Assets.xcassets */; };
 		A1E5C2CD2C361E2700A84441 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1E5C2CC2C361E2700A84441 /* Preview Assets.xcassets */; };
-		A1E5C2D72C361E2D00A84441 /* quicklearnTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5C2D62C361E2D00A84441 /* quicklearnTests.swift */; };
-		A1E5C2E12C361E2D00A84441 /* quicklearnUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5C2E02C361E2D00A84441 /* quicklearnUITests.swift */; };
-		A1E5C2E32C361E2D00A84441 /* quicklearnUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5C2E22C361E2D00A84441 /* quicklearnUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		A1E5C2D32C361E2D00A84441 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A1E5C2BA2C361DE600A84441 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A1E5C2C12C361DE700A84441;
-			remoteInfo = quicklearn;
-		};
-		A1E5C2DD2C361E2D00A84441 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A1E5C2BA2C361DE600A84441 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A1E5C2C12C361DE700A84441;
-			remoteInfo = quicklearn;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		A124F3F52C38D54800EA0D74 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -41,11 +22,6 @@
 		A1E5C2C72C361DE800A84441 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A1E5C2C92C361E2700A84441 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1E5C2CC2C361E2700A84441 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		A1E5C2D22C361E2D00A84441 /* quicklearnTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = quicklearnTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1E5C2D62C361E2D00A84441 /* quicklearnTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quicklearnTests.swift; sourceTree = "<group>"; };
-		A1E5C2DC2C361E2D00A84441 /* quicklearnUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = quicklearnUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1E5C2E02C361E2D00A84441 /* quicklearnUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quicklearnUITests.swift; sourceTree = "<group>"; };
-		A1E5C2E22C361E2D00A84441 /* quicklearnUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quicklearnUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,20 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A1E5C2CF2C361E2D00A84441 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A1E5C2D92C361E2D00A84441 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				A1934BA52C66D2A200ADD74D /* LaTeXSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,8 +40,6 @@
 			isa = PBXGroup;
 			children = (
 				A1E5C2C42C361DE700A84441 /* quicklearn */,
-				A1E5C2D52C361E2D00A84441 /* quicklearnTests */,
-				A1E5C2DF2C361E2D00A84441 /* quicklearnUITests */,
 				A1E5C2C32C361DE700A84441 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -87,8 +48,6 @@
 			isa = PBXGroup;
 			children = (
 				A1E5C2C22C361DE700A84441 /* quicklearn.app */,
-				A1E5C2D22C361E2D00A84441 /* quicklearnTests.xctest */,
-				A1E5C2DC2C361E2D00A84441 /* quicklearnUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,23 +72,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		A1E5C2D52C361E2D00A84441 /* quicklearnTests */ = {
-			isa = PBXGroup;
-			children = (
-				A1E5C2D62C361E2D00A84441 /* quicklearnTests.swift */,
-			);
-			path = quicklearnTests;
-			sourceTree = "<group>";
-		};
-		A1E5C2DF2C361E2D00A84441 /* quicklearnUITests */ = {
-			isa = PBXGroup;
-			children = (
-				A1E5C2E02C361E2D00A84441 /* quicklearnUITests.swift */,
-				A1E5C2E22C361E2D00A84441 /* quicklearnUITestsLaunchTests.swift */,
-			);
-			path = quicklearnUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -146,45 +88,12 @@
 			dependencies = (
 			);
 			name = quicklearn;
+			packageProductDependencies = (
+				A1934BA42C66D2A200ADD74D /* LaTeXSwiftUI */,
+			);
 			productName = quicklearn;
 			productReference = A1E5C2C22C361DE700A84441 /* quicklearn.app */;
 			productType = "com.apple.product-type.application";
-		};
-		A1E5C2D12C361E2D00A84441 /* quicklearnTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A1E5C2E92C361E2D00A84441 /* Build configuration list for PBXNativeTarget "quicklearnTests" */;
-			buildPhases = (
-				A1E5C2CE2C361E2D00A84441 /* Sources */,
-				A1E5C2CF2C361E2D00A84441 /* Frameworks */,
-				A1E5C2D02C361E2D00A84441 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A1E5C2D42C361E2D00A84441 /* PBXTargetDependency */,
-			);
-			name = quicklearnTests;
-			productName = quicklearnTests;
-			productReference = A1E5C2D22C361E2D00A84441 /* quicklearnTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		A1E5C2DB2C361E2D00A84441 /* quicklearnUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A1E5C2EC2C361E2D00A84441 /* Build configuration list for PBXNativeTarget "quicklearnUITests" */;
-			buildPhases = (
-				A1E5C2D82C361E2D00A84441 /* Sources */,
-				A1E5C2D92C361E2D00A84441 /* Frameworks */,
-				A1E5C2DA2C361E2D00A84441 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A1E5C2DE2C361E2D00A84441 /* PBXTargetDependency */,
-			);
-			name = quicklearnUITests;
-			productName = quicklearnUITests;
-			productReference = A1E5C2DC2C361E2D00A84441 /* quicklearnUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -199,14 +108,6 @@
 					A1E5C2C12C361DE700A84441 = {
 						CreatedOnToolsVersion = 15.4;
 					};
-					A1E5C2D12C361E2D00A84441 = {
-						CreatedOnToolsVersion = 15.4;
-						TestTargetID = A1E5C2C12C361DE700A84441;
-					};
-					A1E5C2DB2C361E2D00A84441 = {
-						CreatedOnToolsVersion = 15.4;
-						TestTargetID = A1E5C2C12C361DE700A84441;
-					};
 				};
 			};
 			buildConfigurationList = A1E5C2BD2C361DE600A84441 /* Build configuration list for PBXProject "quicklearn" */;
@@ -219,15 +120,13 @@
 			);
 			mainGroup = A1E5C2B92C361DE600A84441;
 			packageReferences = (
-				A1C8E1572C66C69600196BE5 /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */,
+				A1934BA32C66D2A200ADD74D /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */,
 			);
 			productRefGroup = A1E5C2C32C361DE700A84441 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				A1E5C2C12C361DE700A84441 /* quicklearn */,
-				A1E5C2D12C361E2D00A84441 /* quicklearnTests */,
-				A1E5C2DB2C361E2D00A84441 /* quicklearnUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -239,20 +138,6 @@
 			files = (
 				A1E5C2CD2C361E2700A84441 /* Preview Assets.xcassets in Resources */,
 				A1E5C2CA2C361E2700A84441 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A1E5C2D02C361E2D00A84441 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A1E5C2DA2C361E2D00A84441 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,37 +154,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A1E5C2CE2C361E2D00A84441 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A1E5C2D72C361E2D00A84441 /* quicklearnTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A1E5C2D82C361E2D00A84441 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A1E5C2E12C361E2D00A84441 /* quicklearnUITests.swift in Sources */,
-				A1E5C2E32C361E2D00A84441 /* quicklearnUITestsLaunchTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		A1E5C2D42C361E2D00A84441 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A1E5C2C12C361DE700A84441 /* quicklearn */;
-			targetProxy = A1E5C2D32C361E2D00A84441 /* PBXContainerItemProxy */;
-		};
-		A1E5C2DE2C361E2D00A84441 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A1E5C2C12C361DE700A84441 /* quicklearn */;
-			targetProxy = A1E5C2DD2C361E2D00A84441 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A1E5C2E42C361E2D00A84441 /* Debug */ = {
@@ -444,6 +299,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = krisk.quicklearn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -472,81 +330,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = krisk.quicklearn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		A1E5C2EA2C361E2D00A84441 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = krisk.quicklearnTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/quicklearn.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/quicklearn";
-			};
-			name = Debug;
-		};
-		A1E5C2EB2C361E2D00A84441 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = krisk.quicklearnTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/quicklearn.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/quicklearn";
-			};
-			name = Release;
-		};
-		A1E5C2ED2C361E2D00A84441 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = krisk.quicklearnUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = quicklearn;
-			};
-			name = Debug;
-		};
-		A1E5C2EE2C361E2D00A84441 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = krisk.quicklearnUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = quicklearn;
 			};
 			name = Release;
 		};
@@ -571,36 +360,26 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1E5C2E92C361E2D00A84441 /* Build configuration list for PBXNativeTarget "quicklearnTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A1E5C2EA2C361E2D00A84441 /* Debug */,
-				A1E5C2EB2C361E2D00A84441 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A1E5C2EC2C361E2D00A84441 /* Build configuration list for PBXNativeTarget "quicklearnUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A1E5C2ED2C361E2D00A84441 /* Debug */,
-				A1E5C2EE2C361E2D00A84441 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A1C8E1572C66C69600196BE5 /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */ = {
+		A1934BA32C66D2A200ADD74D /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/colinc86/LaTeXSwiftUI";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 1.3.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A1934BA42C66D2A200ADD74D /* LaTeXSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1934BA32C66D2A200ADD74D /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */;
+			productName = LaTeXSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A1E5C2BA2C361DE600A84441 /* Project object */;
 }
