@@ -1,4 +1,5 @@
 import SwiftUI
+import LaTeXSwiftUI
 
 extension Color {
     init(hex: Int, opacity: Double = 1) {
@@ -61,93 +62,111 @@ func generatePrimes(to n: Int) -> [Int] {
 
 var cards = [
     CardData(
-        title: "1-1 Addition",
+        title: "1x1 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
             gen: {return [Int.random(in: 1...9), Int.random(in: 1...9)]}
-            , eq: "%d + %d",
+            , eq: "$%d + %d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return vars[0] + vars[1] == ans[0]}
         )
     ),
     CardData(
-        title: "2-1 Addition",
+        title: "2x1 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
             gen: {return [Int.random(in: 10...99), Int.random(in: 1...9)].shuffled()},
-            eq: "%d + %d",
+            eq: "$%d + %d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return vars[0] + vars[1] == ans[0]}
         )
     ),
     CardData(
-        title: "2-2 Addition",
+        title: "2x2 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
             gen: {return [Int.random(in: 10...99), Int.random(in: 10...99)]},
-            eq: "%d + %d",
+            eq: "$%d + %d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return vars[0] + vars[1] == ans[0]}
         )
     ),
     CardData(
-        title: "3-3 Addition",
+        title: "3x3 Addition",
         type: CardType.Arithmetic,
         template: CardTemplate(
             gen: {return [Int.random(in: 100...999), Int.random(in: 100...999)]},
-            eq: "%d + %d",
+            eq: "$%d + %d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return vars[0] + vars[1] == ans[0]}
         )
     ),
     CardData(
-        title: "1-1 Multiplication",
+        title: "1x1 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
             gen: {return [Int.random(in: 1...9), Int.random(in: 1...9)]},
-            eq: "%d ⋅ %d",
+            eq: "$%d \\cdot %d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return vars[0] * vars[1] == ans[0]}
         )
     ),
     CardData(
-        title: "2-1 Multiplication",
+        title: "Times Tables (to 12)",
+        type: CardType.Arithmetic,
+        template: CardTemplate(
+            gen: {return [Int.random(in: 1...12), Int.random(in: 1...12)]},
+            eq: "$%d \\cdot %d\\",
+            ans: {(ans: [Int], vars : [Int]) -> Bool in return vars[0] * vars[1] == ans[0]}
+        )
+    ),
+    CardData(
+        title: "Times Tables (to 20)",
+        type: CardType.Arithmetic,
+        template: CardTemplate(
+            gen: {return [Int.random(in: 1...20), Int.random(in: 1...20)]},
+            eq: "$%d \\cdot %d$",
+            ans: {(ans: [Int], vars : [Int]) -> Bool in return vars[0] * vars[1] == ans[0]}
+        )
+    ),
+    CardData(
+        title: "2x1 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
             gen: {return [Int.random(in: 10...99), Int.random(in: 1...9)].shuffled()},
-            eq: "%d ⋅ %d",
+            eq: "$%d \\cdot %d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return vars[0] * vars[1] == ans[0]}
         )
     ),
     CardData(
-        title: "2-2 Multiplication",
+        title: "2x2 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
             gen: {return [Int.random(in: 10...99), Int.random(in: 10...99)]},
-            eq: "%d ⋅ %d",
+            eq: "$%d \\cdot %d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return vars[0] * vars[1] == ans[0]}
         )
     ),
     CardData(
-        title: "3-3 Multiplication",
+        title: "3x3 Multiplication",
         type: CardType.Arithmetic,
         template: CardTemplate(
             gen: {return [Int.random(in: 100...999), Int.random(in: 100...999)]},
-            eq: "%d ⋅ %d",
+            eq: "$%d \\cdot %d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return vars[0] * vars[1] == ans[0]}
         )
     ),
     CardData(
-        title: "Factoring Semiprimes",
+        title: "Factoring Semiprimes (to 20)",
         type: CardType.Arithmetic,
         template: CardTemplate(
             gen: {[generatePrimes(to: 20).randomElement()! * generatePrimes(to: 20).randomElement()!]},
-            eq: "%d = ? ⋅ ?",
+            eq: "$%d = x \\cdot y$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return (vars[0] == ans[0]*ans[1] && ans[0] != 1) && ans[1] != 1},
             num_ans: 2
         )
     ),
     CardData(
-        title: "Factoring Trientiprimes",
+        title: "Factoring Trientiprimes (to 15)",
         type: CardType.Arithmetic,
         template: CardTemplate(
             gen: {[generatePrimes(to: 15).randomElement()! * generatePrimes(to: 15).randomElement()! * generatePrimes(to: 15).randomElement()!]},
-            eq: "%d = ? ⋅ ? ⋅ ?",
+            eq: "$%d = x \\cdot y \\cdot z$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return (vars[0] == ans[0]*ans[1]*ans[2] && ans[0] != 1) && ans[1] != 1 && ans[2] != 1},
             num_ans: 3
         )
@@ -160,7 +179,7 @@ var cards = [
                 let a = Int.random(in: 1...9)
                 let b = Int.random(in: 1...9)
                 return [a, b, Int.random(in: 1...9)*a + b]
-            }, eq: "%dx + %d = %d",
+            }, eq: "$%dx + %d = %d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return (vars[2] - vars[1])/vars[0] == ans[0]}
         )
     ),
@@ -173,7 +192,7 @@ var cards = [
                 let x2 = Int.random(in: -10...10)
                 return [x1 + x2, x1 * x2]
             },
-            eq: "x² + %dx + %d = 0",
+            eq: "$x^2 + %dx + %d = 0$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return (vars[0] == ans[0] + ans[1] && vars[1] == ans[0]*ans[1])},
             num_ans: 2
         )
@@ -183,7 +202,7 @@ var cards = [
         type: CardType.Calculus,
         template: CardTemplate(
             gen: {[Int.random(in: 1...9), Int.random(in: 1...6)]},
-            eq: "d/dx %dx^%d",
+            eq: "$\\frac{d}{dx} %dx^%d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return (ans[0]*ans[1] == vars[0] && ans[1]-1 == vars[1])},
             num_ans: 2
         )
@@ -193,7 +212,7 @@ var cards = [
         type: CardType.Calculus,
         template: CardTemplate(
             gen: {[Int.random(in: 1...9), [1, 2, 3, 4, 5, 6, -1, -2, -3].randomElement()!]},
-            eq: "d/dx %dx^%d",
+            eq: "$\\frac{d}{dx} %dx^%d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return (ans[0]*ans[1] == vars[0] && ans[1]-1 == vars[1])},
             num_ans: 2
         )
@@ -203,7 +222,7 @@ var cards = [
         type: CardType.Calculus,
         template: CardTemplate(
             gen: {[Int.random(in: 1...9), [1, 2, 3, 4, 5, 6, -1, -2, -3].randomElement()!]}, // need to refactor to add rationals later
-            eq: "d/dx %dx^%d",
+            eq: "$\\frac{d}{dx} %dx^%d$",
             ans: {(ans: [Int], vars : [Int]) -> Bool in return (ans[0]*ans[1] == vars[0] && ans[1]-1 == vars[1])},
             num_ans: 2
         )
@@ -296,11 +315,16 @@ struct CardPage : View {
     
     var body: some View {
         NavigationStack {
-            VStack {
+            HStack {
                 Label(avg_time_text, systemImage: "clock")
+                    .frame(alignment: .leading)
+                Spacer()
+            }
+            .padding(15)
+            VStack {
                 Spacer()
                 VStack {
-                    Text("\(eq)")
+                    LaTeX("\(eq)")
                         .font(.system(size: 32))
                     HStack {
                         ForEach(0..<ans.count) {
@@ -330,8 +354,8 @@ struct CardPage : View {
                                 Button("-") {pressNumPadButton(button: "-")}
                                     .buttonStyle(NumPadButtonStyle())
                             case 2:
-                                Button(".") {pressNumPadButton(button: ".")}
-                                    .buttonStyle(NumPadButtonStyle())
+                                Spacer()
+                                    .frame(width: 75, height: 60, alignment: Alignment.center)
                             default:
                                 Button("-") {pressNumPadButton(button: "-")}
                                     .buttonStyle(NumPadButtonStyle())
@@ -345,8 +369,8 @@ struct CardPage : View {
                             .buttonStyle(NumPadButtonStyle())
                         Button(action: {pressNumPadButton(button: "next")}) {Label("", systemImage: "arrowtriangle.right").labelStyle(.iconOnly)}
                             .buttonStyle(NumPadButtonStyle())
-                        Button(action: {pressNumPadButton(button: "fraction")}) {Label("", systemImage: "divide").labelStyle(.iconOnly)}
-                            .buttonStyle(NumPadButtonStyle())
+                        Spacer()
+                            .frame(width: 75, height: 60, alignment: Alignment.center)
                     }
                 }
                 .padding(10)
